@@ -29,4 +29,11 @@ export const endpoints = {
   user: {
     getUser: "users",
   },
+  login: "login",
+  pawstore: {
+    home: "pawstore/home",
+    about: "pawstore/about",
+    contacts: "pawstore/contacts",
+    shop: "pawstore/shop",
+  },
 };
