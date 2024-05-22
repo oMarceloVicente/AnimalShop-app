@@ -18,7 +18,7 @@ const Login = () => {
   if (searchParams.get("returnTo")) {
     callback = `${window.location.origin}${searchParams.get("returnTo")}`;
   } else {
-    callback = `${window.location.origin}/dashboard`;
+    callback = `${window.location.origin}/pawstore/home`;
   }
 
   const handleClickGoogle = async () => {

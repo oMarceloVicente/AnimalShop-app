@@ -1,13 +1,9 @@
-import TestApi from "@/components/testApi";
+"use client";
+
 import React from "react";
 
 const HomePage = () => {
-  return (
-    <div>
-      This is the home page!
-      <TestApi />
-    </div>
-  );
+  return <div>This is the home page!</div>;
 };
 
 export default HomePage;

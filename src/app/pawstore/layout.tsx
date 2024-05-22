@@ -1,4 +1,5 @@
 import Header from "@/layouts/dashboard/header";
+import { SessionProvider } from "next-auth/react";
 import React from "react";
 
 interface Props {
@@ -9,7 +10,7 @@ const MainLayout = ({ children }: Props) => {
   return (
     <html lang="en">
       <body>
-        <Header>{children}</Header>
+          <Header>{children}</Header>
       </body>
     </html>
   );

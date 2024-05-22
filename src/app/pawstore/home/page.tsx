@@ -1,3 +1,5 @@
+"use client";
+
 import HomePage from "@/sections/homePage";
 import React from "react";
 

@@ -1,4 +1,6 @@
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
+import NextAuthSessionProvider from "@/auth/context/nextAuthSessionProvider";
 
 export const metadata = {
   title: "Next.js",
@@ -12,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <NextAuthSessionProvider>
+        <body>{children}</body>
+      </NextAuthSessionProvider>
     </html>
   );
 }
