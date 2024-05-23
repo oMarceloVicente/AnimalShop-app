@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,6 +16,8 @@ import AdbIcon from "@mui/icons-material/Adb";
 import PetsIcon from "@mui/icons-material/Pets";
 import { useRouter } from "next/navigation";
 import { endpoints } from "@/utils/axios";
+import { signOut, useSession } from "next-auth/react";
+import Avatar from "@/components/avatar/avatar";
 
 const pages = ["Shop", "Contacts", "About", "Login"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -27,6 +28,7 @@ type Props = {
 
 const Header = ({ children }: Props) => {
   const router = useRouter();
+  const session = useSession();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -45,8 +47,21 @@ const Header = ({ children }: Props) => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (name: string) => {
+    if (name === "Logout") {
+      handleLogout();
+    }
     setAnchorElUser(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      signOut({
+        callbackUrl: `${window.location.origin}/login`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleClickMenu = (name: string) => {
@@ -139,7 +154,10 @@ const Header = ({ children }: Props) => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar
+                    src={session.data?.user?.image || undefined}
+                    alt={session.data?.user?.name || undefined}
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -159,7 +177,10 @@ const Header = ({ children }: Props) => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleCloseUserMenu(setting)}
+                  >
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
