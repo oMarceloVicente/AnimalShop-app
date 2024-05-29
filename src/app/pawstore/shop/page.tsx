@@ -1,9 +1,13 @@
-"use client";
-
+import ShopSection from "@/sections/shop/shop";
+import Stack from "@mui/material/Stack";
 import React from "react";
 
 const ShopPage = () => {
-  return <div>This is the shop page</div>;
+  return (
+    <Stack margin={6} gap={2}>
+      <ShopSection />
+    </Stack>
+  );
 };
 
 export default ShopPage;

@@ -27,7 +27,7 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
 
 export const endpoints = {
   user: {
-    getUser: "users",
+    getUser: "user",
   },
   login: "login",
   pawstore: {
@@ -35,5 +35,13 @@ export const endpoints = {
     about: "pawstore/about",
     contacts: "pawstore/contacts",
     shop: "pawstore/shop",
+  },
+  animal: {
+    getAnimals: "animal",
+    createAnimal: "animal",
+    getAnimalById: "animal/{id}",
+    getAnimalBySpecie: "animal/specie/{specie}",
+    updateAnimal: "animal/{id}",
+    deleteAnimal: "animal/{id}",
   },
 };

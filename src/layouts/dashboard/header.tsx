@@ -19,7 +19,7 @@ import { endpoints } from "@/utils/axios";
 import { signOut, useSession } from "next-auth/react";
 import Avatar from "@/components/avatar/avatar";
 
-const pages = ["Shop", "Contacts", "About", "Login"];
+const pages = ["Shop", "Contacts", "About"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 type Props = {
@@ -57,7 +57,7 @@ const Header = ({ children }: Props) => {
   const handleLogout = async () => {
     try {
       signOut({
-        callbackUrl: `${window.location.origin}/login`,
+        callbackUrl: `${window.location.href}`,
       });
     } catch (error) {
       console.error(error);
@@ -65,11 +65,11 @@ const Header = ({ children }: Props) => {
   };
 
   const handleClickMenu = (name: string) => {
-    if (name !== "Login") {
-      router.push(`/pawstore/${name.toLowerCase()}`);
-    } else {
-      router.push(`/${endpoints.login}`);
-    }
+    router.push(`/pawstore/${name.toLowerCase()}`);
+  };
+
+  const handleLogin = async () => {
+    router.push(`/${endpoints.login}`);
   };
 
   return (
@@ -150,42 +150,53 @@ const Header = ({ children }: Props) => {
                 </Button>
               ))}
             </Box>
-
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    src={session.data?.user?.image || undefined}
-                    alt={session.data?.user?.name || undefined}
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting}
-                    onClick={() => handleCloseUserMenu(setting)}
-                  >
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+            {session.status === "authenticated" && (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      src={session.data?.user?.image || undefined}
+                      alt={session.data?.user?.name || undefined}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => handleCloseUserMenu(setting)}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            )}
+            {session.status === "unauthenticated" && (
+              <Box>
+                <Button
+                  onClick={() => handleLogin()}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Login
+                </Button>
+              </Box>
+            )}
           </Toolbar>
         </Container>
       </AppBar>
